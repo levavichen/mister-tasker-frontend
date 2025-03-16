@@ -6,10 +6,14 @@ import { taskService as remote } from './task.service.remote'
 
 function getEmptyTask() {
     return {
-        vendor: makeId(),
-        price: getRandomIntInclusive(1000, 9000),
-        speed: getRandomIntInclusive(80, 240),
-        msgs: [],
+        title: '',
+        status: 'new',
+        importance: getRandomIntInclusive(1, 3),
+        createdAt: Date.now(),
+        lastTriedAt: null,
+        triesCount: 0,
+        doneAt: null,
+        errors: [],
     }
 }
 

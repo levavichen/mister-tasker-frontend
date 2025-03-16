@@ -4,10 +4,13 @@ export const REMOVE_TASK = 'REMOVE_TASK'
 export const ADD_TASK = 'ADD_TASK'
 export const UPDATE_TASK = 'UPDATE_TASK'
 export const ADD_TASK_MSG = 'ADD_TASK_MSG'
+export const TOGGLE_ISWORKER_RUNNING = 'TOGGLE_ISWORKER_RUNNING'
+
 
 const initialState = {
     tasks: [],
-    task: null
+    task: null,
+    isWorkerRunning: false
 }
 
 export function taskReducer(state = initialState, action) {
@@ -34,6 +37,9 @@ export function taskReducer(state = initialState, action) {
             break
         case ADD_TASK_MSG:
             newState = { ...state, task: { ...state.task, msgs: [...state.task.msgs || [], action.msg] } }
+            break
+        case TOGGLE_ISWORKER_RUNNING:
+            newState = { ...state, isWorkerRunning: !state.isWorkerRunning };
             break
         default:
     }

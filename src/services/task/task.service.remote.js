@@ -5,12 +5,16 @@ export const taskService = {
     getById,
     save,
     remove,
-    addTaskMsg
+    addTaskMsg,
+    start,
 }
-
-async function query(filterBy = { txt: '', price: 0 }) {
+async function query(filterBy = {}) {
     return httpService.get(`task`, filterBy)
 }
+
+// async function query(filterBy = { txt: '', price: 0 }) {
+//     return httpService.get(`task`, filterBy)
+// }
 
 function getById(taskId) {
     return httpService.get(`task/${taskId}`)
@@ -28,6 +32,11 @@ async function save(task) {
         savedTask = await httpService.post('task', task)
     }
     return savedTask
+}
+
+async function start(task) {
+    const startedTask = await httpService.post(`task/${task._id}/start`, { task })
+    return startedTask
 }
 
 async function addTaskMsg(taskId, txt) {

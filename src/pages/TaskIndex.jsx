@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
-import { useSelector } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
 
-import { loadTasks, addTask, updateTask, removeTask, addTaskMsg } from '../store/task.actions'
+import { loadTasks, addTask, updateTask, removeTask, addTaskMsg, startTaskWorker, toggleIsWorkerRunning } from '../store/task.actions'
 
 import { showSuccessMsg, showErrorMsg } from '../services/event-bus.service'
 import { taskService } from '../services/task/'
@@ -14,10 +14,16 @@ export function TaskIndex() {
 
     const [filterBy, setFilterBy] = useState(taskService.getDefaultFilter())
     const tasks = useSelector(storeState => storeState.taskModule.tasks)
+    const isWorkerRunning = useSelector(storeState => storeState.taskModule.isWorkerRunning)
+    const dispatch = useDispatch()
+
+    // useEffect(() => {
+    //     loadTasks(filterBy)
+    // }, [filterBy])
 
     useEffect(() => {
-        loadTasks(filterBy)
-    }, [filterBy])
+        loadTasks()
+    }, [])
 
     function onSetFilterBy(filterBy) {
         setFilterBy(prevFilterBy => ({ ...prevFilterBy, ...filterBy }))
@@ -34,7 +40,8 @@ export function TaskIndex() {
 
     async function onAddTask() {
         const task = taskService.getEmptyTask()
-        task.vendor = prompt('Vendor?')
+        task.title = prompt('title?')
+        task.importance = prompt('importance?')
         try {
             const savedTask = await addTask(task)
             showSuccessMsg(`Task added (id: ${savedTask._id})`)
@@ -55,17 +62,37 @@ export function TaskIndex() {
         }
     }
 
+    async function onStartTaskWorker(task) {
+        dispatch(toggleIsWorkerRunning())
+
+        const taskToSave = { ...task, status: 'running' }
+        try {
+            const updatedTask = await updateTask(taskToSave)
+            const startedTask = await startTaskWorker(updatedTask)
+
+            showSuccessMsg(`Task updated, new status is: ${startedTask.status}`)
+        } catch (err) {
+            showErrorMsg('Cannot update task')
+        }
+    }
+
     return (
         <main className="task-index">
             <header>
-                <h2>Tasks</h2>
-                {userService.getLoggedinUser() && <button onClick={onAddTask}>Add a Task</button>}
+                <h2>Mister Tasker</h2>
+                {/* {userService.getLoggedinUser() && <button onClick={onAddTask}>Add a Task</button>} */}
             </header>
+            <section className='actions'>
+                <button>Generate Tasks</button>
+                <button>Clear Tasks</button>
+                <button onClick={onAddTask}>Create new task</button>
+                <button>Stop task worker</button>
+            </section>
             <TaskFilter filterBy={filterBy} onSetFilterBy={onSetFilterBy} />
             <TaskList
                 tasks={tasks}
                 onRemoveTask={onRemoveTask}
-                onUpdateTask={onUpdateTask} />
+                onStartTaskWorker={onStartTaskWorker} />
         </main>
     )
 }

@@ -1,27 +1,28 @@
 import { userService } from '../services/user'
-import { TaskPreview } from './TaskPreview'
+import { TaskDetails } from './TaskDetails'
 
-export function TaskList({ tasks, onRemoveTask, onUpdateTask }) {
-
-    function shouldShowActionBtns(task) {
-        const user = userService.getLoggedinUser()
-
-        if (!user) return false
-        if (user.isAdmin) return true
-        return task.owner?._id === user._id
-    }
+export function TaskList({ tasks, onRemoveTask, onStartTaskWorker }) {
 
     return <section>
-        <ul className="list">
-            {tasks.map(task =>
-                <li key={task._id}>
-                    <TaskPreview task={task} />
-                    {shouldShowActionBtns(task) && <div className="actions">
-                        <button onClick={() => onUpdateTask(task)}>Edit</button>
-                        <button onClick={() => onRemoveTask(task._id)}>x</button>
-                    </div>}
-                </li>)
-            }
-        </ul>
-    </section>
+        <table className='table'>
+            <thead>
+                <tr>
+                    <th>Title</th>
+                    <th>Importance</th>
+                    <th>Status</th>
+                    <th>Tries Count</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {tasks.map(task =>
+                    <TaskDetails
+                        task={task}
+                        onRemoveTask={onRemoveTask}
+                        onStartTaskWorker={onStartTaskWorker}
+                    />
+                )}
+            </tbody>
+        </table>
+    </section >
 }

@@ -35,16 +35,86 @@ export function TaskFilter({ filterBy, onSetFilterBy }) {
     }
 
     return <section className="task-filter">
-        <h3>Filter:</h3>
-        <input
-            type="text"
-            name="txt"
-            value={filterToEdit.txt}
-            placeholder="Free text"
-            onChange={handleChange}
-            required
-        />
-        <input
+        <h3>Filters:</h3>
+        <section className="filter-by-importance">
+            <h4>Importance</h4>
+            <label>
+                <span>1</span>
+                <input
+                    type="checkbox"
+                    name="importance"
+                    value="1"
+                // checked={filterToEdit === '1'}
+                // onChange={handleChange}
+                />
+            </label>
+            <label>
+                <span>2</span>
+                <input
+                    type="checkbox"
+                    name="importance"
+                    value="2"
+                // checked={filterToEdit === '2'}
+                // onChange={handleChange}
+                />
+            </label>
+            <label>
+                <span>3</span>
+                <input
+                    type="checkbox"
+                    name="importance"
+                    value="3"
+                // checked={filterToEdit === '3'}
+                // onChange={handleChange}
+                />
+            </label>
+        </section>
+        <section className="filter-by-text">
+            <label for="text">Filter by text</label>
+            <input
+                type="text"
+                name="txt"
+                value={filterToEdit.txt}
+                placeholder="search for title"
+                // onChange={handleChange}
+                required
+            />
+        </section>
+        <section className="filter-by-status">
+            <h4>Status</h4>
+            <label>
+                <span>New</span>
+                <input
+                    type="checkbox"
+                    name="status"
+                    value="new"
+                // checked={filterToEdit === 'new'}
+                // onChange={handleChange}
+                />
+            </label>
+            <label>
+                <span>Done</span>
+                <input
+                    type="checkbox"
+                    name="status"
+                    value="done"
+                // checked={filterToEdit === 'new'}
+                // onChange={handleChange}
+                />
+            </label>
+            <label>
+                <span>Fail</span>
+                <input
+                    type="checkbox"
+                    name="status"
+                    value="fail"
+                // checked={filterToEdit === 'fail'}
+                // onChange={handleChange}
+                />
+            </label>
+        </section>
+
+        {/* <input
             type="number"
             min="0"
             name="minSpeed"
@@ -113,6 +183,6 @@ export function TaskFilter({ filterBy, onSetFilterBy }) {
         </div>
         <button
             className="btn-clear"
-            onClick={clearSort}>Clear</button>
+            onClick={clearSort}>Clear</button> */}
     </section>
 }

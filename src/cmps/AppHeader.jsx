@@ -25,7 +25,7 @@ export function AppHeader() {
                     E2E Demo
                 </NavLink>
                 <NavLink to="/about">About</NavLink>
-                <NavLink to="/task">Tasks</NavLink>
+                <NavLink to="/task">Cars</NavLink>
                 <NavLink to="/chat">Chat</NavLink>
                 <NavLink to="/review">Review</NavLink>
                 {user?.isAdmin && <NavLink to="/admin">Admin</NavLink>}

@@ -14,34 +14,39 @@ export const taskService = {
 }
 window.cs = taskService
 
-
-async function query(filterBy = { txt: '', price: 0 }) {
+async function query() {
     var tasks = await storageService.query(STORAGE_KEY)
     console.log('tasks:', tasks)
-    const { txt, minSpeed, maxPrice, sortField, sortDir } = filterBy
-
-    if (txt) {
-        const regex = new RegExp(filterBy.txt, 'i')
-        tasks = tasks.filter(task => regex.test(task.vendor) || regex.test(task.description))
-    }
-    if (minSpeed) {
-        tasks = tasks.filter(task => task.speed <= minSpeed)
-    }
-    if (maxPrice) {
-        tasks = tasks.filter(task => task.price <= maxPrice)
-    }
-    if (sortField === 'vendor' || sortField === 'owner') {
-        tasks.sort((task1, task2) =>
-            task1[sortField].localeCompare(task2[sortField]) * +sortDir)
-    }
-    if (sortField === 'price' || sortField === 'speed') {
-        tasks.sort((task1, task2) =>
-            (task1[sortField] - task2[sortField]) * +sortDir)
-    }
-
-    tasks = tasks.map(({ _id, vendor, price, speed, owner }) => ({ _id, vendor, price, speed, owner }))
     return tasks
 }
+
+// async function query(filterBy = { txt: '', price: 0 }) {
+//     var tasks = await storageService.query(STORAGE_KEY)
+//     console.log('tasks:', tasks)
+//     const { txt, minSpeed, maxPrice, sortField, sortDir } = filterBy
+
+//     if (txt) {
+//         const regex = new RegExp(filterBy.txt, 'i')
+//         tasks = tasks.filter(task => regex.test(task.vendor) || regex.test(task.description))
+//     }
+//     if (minSpeed) {
+//         tasks = tasks.filter(task => task.speed <= minSpeed)
+//     }
+//     if (maxPrice) {
+//         tasks = tasks.filter(task => task.price <= maxPrice)
+//     }
+//     if (sortField === 'vendor' || sortField === 'owner') {
+//         tasks.sort((task1, task2) =>
+//             task1[sortField].localeCompare(task2[sortField]) * +sortDir)
+//     }
+//     if (sortField === 'price' || sortField === 'speed') {
+//         tasks.sort((task1, task2) =>
+//             (task1[sortField] - task2[sortField]) * +sortDir)
+//     }
+
+//     tasks = tasks.map(({ _id, vendor, price, speed, owner }) => ({ _id, vendor, price, speed, owner }))
+//     return tasks
+// }
 
 function getById(taskId) {
     return storageService.get(STORAGE_KEY, taskId)

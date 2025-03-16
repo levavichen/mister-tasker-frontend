@@ -2,14 +2,12 @@ import { legacy_createStore as createStore, combineReducers } from 'redux'
 
 import { taskReducer } from './task.reducer'
 import { userReducer } from './user.reducer'
-import { reviewReducer } from './review.reducer'
 import { systemReducer } from './system.reducer'
 
 const rootReducer = combineReducers({
     taskModule: taskReducer,
     userModule: userReducer,
     systemModule: systemReducer,
-    reviewModule: reviewReducer,
 })
 
 

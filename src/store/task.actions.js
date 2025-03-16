@@ -1,6 +1,6 @@
 import { taskService } from '../services/task'
 import { store } from './store'
-import { ADD_TASK, REMOVE_TASK, SET_TASKS, SET_TASK, UPDATE_TASK, ADD_TASK_MSG } from './task.reducer'
+import { ADD_TASK, REMOVE_TASK, SET_TASKS, SET_TASK, UPDATE_TASK, ADD_TASK_MSG, TOGGLE_ISWORKER_RUNNING } from './task.reducer'
 
 export async function loadTasks(filterBy) {
     try {
@@ -55,6 +55,17 @@ export async function updateTask(task) {
     }
 }
 
+export async function startTaskWorker(task) {
+    try {
+        const startedTask = await taskService.start(task)
+        store.dispatch(getCmdUpdateTask(startedTask))
+        return startedTask
+    } catch (err) {
+        console.log('Cannot save task', err)
+        throw err
+    }
+}
+
 export async function addTaskMsg(taskId, txt) {
     try {
         const msg = await taskService.addTaskMsg(taskId, txt)
@@ -101,6 +112,12 @@ function getCmdAddTaskMsg(msg) {
     return {
         type: ADD_TASK_MSG,
         msg
+    }
+}
+
+export function toggleIsWorkerRunning() {
+    return {
+        type: TOGGLE_ISWORKER_RUNNING,
     }
 }
 
