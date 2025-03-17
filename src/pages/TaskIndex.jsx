@@ -23,7 +23,7 @@ export function TaskIndex() {
 
     useEffect(() => {
         loadTasks()
-    }, [])
+    }, [tasks])
 
     function onSetFilterBy(filterBy) {
         setFilterBy(prevFilterBy => ({ ...prevFilterBy, ...filterBy }))
@@ -76,6 +76,16 @@ export function TaskIndex() {
         }
     }
 
+    async function onToggleWorker() {
+        const currIsWorkerRunning = !isWorkerRunning
+        try {
+            await taskService.toggleWorker(currIsWorkerRunning)
+            dispatch(toggleIsWorkerRunning())
+        } catch (err) {
+            showErrorMsg('Error toggeling worker')
+        }
+    }
+
     return (
         <main className="task-index">
             <header>
@@ -83,12 +93,14 @@ export function TaskIndex() {
                 {/* {userService.getLoggedinUser() && <button onClick={onAddTask}>Add a Task</button>} */}
             </header>
             <section className='actions'>
-                <button>Generate Tasks</button>
-                <button>Clear Tasks</button>
+                {/* <button>Generate Tasks</button> */}
+                {/* <button>Clear Tasks</button> */}
                 <button onClick={onAddTask}>Create new task</button>
-                <button>Stop task worker</button>
+                <button onClick={onToggleWorker}>
+                    {isWorkerRunning ? 'Stop task worker' : 'Start task worker'}
+                </button>
             </section>
-            <TaskFilter filterBy={filterBy} onSetFilterBy={onSetFilterBy} />
+            {/* <TaskFilter filterBy={filterBy} onSetFilterBy={onSetFilterBy} /> */}
             <TaskList
                 tasks={tasks}
                 onRemoveTask={onRemoveTask}

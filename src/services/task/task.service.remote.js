@@ -7,6 +7,7 @@ export const taskService = {
     remove,
     addTaskMsg,
     start,
+    toggleWorker
 }
 async function query(filterBy = {}) {
     return httpService.get(`task`, filterBy)
@@ -35,8 +36,13 @@ async function save(task) {
 }
 
 async function start(task) {
-    const startedTask = await httpService.post(`task/${task._id}/start`, { task })
+    const startedTask = await httpService.post(`task/${task._id}/start`)
     return startedTask
+}
+
+async function toggleWorker(isWorkerRunning) {
+    console.log('isWorkerRunning', isWorkerRunning)
+    return httpService.post('task/worker/toggle', { isWorkerRunning })
 }
 
 async function addTaskMsg(taskId, txt) {
