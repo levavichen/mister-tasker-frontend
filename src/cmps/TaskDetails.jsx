@@ -11,6 +11,8 @@ export function TaskDetails({ task, onRemoveTask, onStartTaskWorker }) {
 
   // const { taskId } = useParams()
   // const task = useSelector(storeState => storeState.taskModule.task)
+  const isWorkerRunning = useSelector(storeState => storeState.taskModule.isWorkerRunning)
+
 
   // useEffect(() => {
   //   loadTask(taskId)
@@ -31,11 +33,13 @@ export function TaskDetails({ task, onRemoveTask, onStartTaskWorker }) {
     <td>{task.importance}</td>
     <td>{task.status}</td>
     <td>{task.triesCount}</td>
-    <td>
-      {task.status === 'done' && <button onClick={() => onRemoveTask(task._id)}> Remove</button>}
-      {task.status === 'failed' && <button onClick={() => onStartTaskWorker(task)}>Retry</button>}
-      {task.status === 'new' && <button onClick={() => onStartTaskWorker(task)}>Start</button>}
-    </td>
+    {!isWorkerRunning && (
+      <td>
+        {task.status === 'done' && <button onClick={() => onRemoveTask(task._id)}> Remove</button>}
+        {task.status === 'failed' && <button onClick={() => onStartTaskWorker(task)}>Retry</button>}
+        {task.status === 'new' && <button onClick={() => onStartTaskWorker(task)}>Start</button>}
+      </td>
+    )}
   </tr>
 }
 

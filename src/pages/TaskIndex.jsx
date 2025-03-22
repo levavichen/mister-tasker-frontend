@@ -23,7 +23,7 @@ export function TaskIndex() {
 
     useEffect(() => {
         loadTasks()
-    }, [tasks])
+    }, [])
 
     function onSetFilterBy(filterBy) {
         setFilterBy(prevFilterBy => ({ ...prevFilterBy, ...filterBy }))
@@ -63,7 +63,7 @@ export function TaskIndex() {
     }
 
     async function onStartTaskWorker(task) {
-        dispatch(toggleIsWorkerRunning())
+        // dispatch(toggleIsWorkerRunning())
 
         const taskToSave = { ...task, status: 'running' }
         try {
