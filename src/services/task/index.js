@@ -20,10 +20,10 @@ function getEmptyTask() {
 function getDefaultFilter() {
     return {
         txt: '',
-        maxPrice: '',
-        minSpeed: '',
-        sortField: '',
-        sortDir: '',
+        // maxPrice: '',
+        // minSpeed: '',
+        // sortField: '',
+        // sortDir: '',
         // pageIdx: 0
     }
 }

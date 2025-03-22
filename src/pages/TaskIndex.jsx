@@ -19,13 +19,9 @@ export function TaskIndex() {
     const isWorkerRunning = useSelector(storeState => storeState.taskModule.isWorkerRunning)
     const dispatch = useDispatch()
 
-    // useEffect(() => {
-    //     loadTasks(filterBy)
-    // }, [filterBy])
-
     useEffect(() => {
-        loadTasks()
-    }, [])
+        loadTasks(filterBy)
+    }, [filterBy])
 
     useEffect(() => {
         socketService.on(SOCKET_EVENT_TASK_UPDATED, handleTaskUpdate)
@@ -76,20 +72,19 @@ export function TaskIndex() {
         }
     }
 
-    // async function onUpdateTask(task) {
-    //     const speed = +prompt('New speed?', task.speed)
-    //     if (!speed) return
-    //     const taskToSave = { ...task, speed }
-    //     try {
-    //         const savedTask = await updateTask(taskToSave)
-    //         showSuccessMsg(`Task updated, new speed: ${savedTask.speed}`)
-    //     } catch (err) {
-    //         showErrorMsg('Cannot update task')
-    //     }
-    // }
+    async function onUpdateTask(task) {
+        const speed = +prompt('New speed?', task.speed)
+        if (!speed) return
+        const taskToSave = { ...task, speed }
+        try {
+            const savedTask = await updateTask(taskToSave)
+            showSuccessMsg(`Task updated, new speed: ${savedTask.speed}`)
+        } catch (err) {
+            showErrorMsg('Cannot update task')
+        }
+    }
 
     async function onStartTaskWorker(task) {
-        // dispatch(toggleIsWorkerRunning())
 
         const taskToSave = { ...task, status: 'running' }
         try {
@@ -126,7 +121,7 @@ export function TaskIndex() {
                     {isWorkerRunning ? 'Stop task worker' : 'Start task worker'}
                 </button>
             </section>
-            {/* <TaskFilter filterBy={filterBy} onSetFilterBy={onSetFilterBy} /> */}
+            <TaskFilter filterBy={filterBy} onSetFilterBy={onSetFilterBy} />
             <TaskList
                 tasks={tasks}
                 onRemoveTask={onRemoveTask}

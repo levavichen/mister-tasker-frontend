@@ -9,13 +9,11 @@ export const taskService = {
     start,
     toggleWorker
 }
-async function query(filterBy = {}) {
+
+async function query(filterBy = { txt: '' }) {
+    console.log('filter by:', filterBy)
     return httpService.get(`task`, filterBy)
 }
-
-// async function query(filterBy = { txt: '', price: 0 }) {
-//     return httpService.get(`task`, filterBy)
-// }
 
 function getById(taskId) {
     return httpService.get(`task/${taskId}`)
