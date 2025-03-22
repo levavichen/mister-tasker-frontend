@@ -22,12 +22,12 @@ export function AppHeader() {
         <header className="app-header main-container full">
             <nav className=''>
                 <NavLink to="/" className="/logo">
-                    E2E Demo
+                    MISTER TASKER
                 </NavLink>
-                <NavLink to="/about">About</NavLink>
+                {/* <NavLink to="/about">About</NavLink>
                 <NavLink to="/task">Cars</NavLink>
                 <NavLink to="/chat">Chat</NavLink>
-                <NavLink to="/review">Review</NavLink>
+                <NavLink to="/review">Review</NavLink> */}
                 {user?.isAdmin && <NavLink to="/admin">Admin</NavLink>}
 
                 {!user && <NavLink to="login" className="login-link">Login</NavLink>}

@@ -10,6 +10,8 @@ import { userService } from '../services/user'
 import { TaskList } from '../cmps/TaskList'
 import { TaskFilter } from '../cmps/TaskFilter'
 
+import { socketService, SOCKET_EVENT_TASK_UPDATED } from '../services/socket.service'
+
 export function TaskIndex() {
 
     const [filterBy, setFilterBy] = useState(taskService.getDefaultFilter())
@@ -25,8 +27,32 @@ export function TaskIndex() {
         loadTasks()
     }, [])
 
+    useEffect(() => {
+        socketService.on(SOCKET_EVENT_TASK_UPDATED, handleTaskUpdate)
+        return () => {
+            socketService.off(SOCKET_EVENT_TASK_UPDATED, handleTaskUpdate)
+        }
+    }, [])
+
     function onSetFilterBy(filterBy) {
         setFilterBy(prevFilterBy => ({ ...prevFilterBy, ...filterBy }))
+    }
+
+    function handleTaskUpdate(updatedTask) {
+        const idx = tasks.findIndex(task => task._id === updatedTask._id)
+        console.log('idx', idx)
+
+        if (idx === -1) {
+            dispatch({
+                type: "ADD_TASK",
+                task: updatedTask
+            })
+        } else {
+            dispatch({
+                type: "UPDATE_TASK",
+                task: updatedTask
+            })
+        }
     }
 
     async function onRemoveTask(taskId) {
@@ -50,17 +76,17 @@ export function TaskIndex() {
         }
     }
 
-    async function onUpdateTask(task) {
-        const speed = +prompt('New speed?', task.speed)
-        if (!speed) return
-        const taskToSave = { ...task, speed }
-        try {
-            const savedTask = await updateTask(taskToSave)
-            showSuccessMsg(`Task updated, new speed: ${savedTask.speed}`)
-        } catch (err) {
-            showErrorMsg('Cannot update task')
-        }
-    }
+    // async function onUpdateTask(task) {
+    //     const speed = +prompt('New speed?', task.speed)
+    //     if (!speed) return
+    //     const taskToSave = { ...task, speed }
+    //     try {
+    //         const savedTask = await updateTask(taskToSave)
+    //         showSuccessMsg(`Task updated, new speed: ${savedTask.speed}`)
+    //     } catch (err) {
+    //         showErrorMsg('Cannot update task')
+    //     }
+    // }
 
     async function onStartTaskWorker(task) {
         // dispatch(toggleIsWorkerRunning())
